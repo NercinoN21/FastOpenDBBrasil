@@ -1,3 +1,5 @@
+import os
+
 import pytest
 from fastapi.testclient import TestClient
 from sqlalchemy import create_engine
@@ -21,3 +23,10 @@ def session():
         yield session
 
     table_registry.metadata.drop_all(engine)
+
+
+@pytest.fixture()
+def _set_env():
+    os.environ['DATABASE_URL'] = 'sqlite:///example.db'
+    yield
+    del os.environ['DATABASE_URL']
